@@ -1,0 +1,203 @@
+#Main 3 Aggregation Pipelines Queries
+
+#1. Query: Get Customer Spending
+query GetCustomerSpending($customerId: ID!) {
+  getCustomerSpending(customerId: $customerId) {
+    customerId
+    totalSpent
+    averageOrderValue
+    lastOrderDate
+  }
+}
+
+# Variables for GetCustomerSpending
+{
+  "customerId": "7895595e-7f25-47fe-a6f8-94b31bfab736"
+}
+
+#2. Query: Get Top Selling Products
+query GetTopSellingProducts($limit: Int!) {
+  getTopSellingProducts(limit: $limit) {
+    productId
+    name
+    totalSold
+  }
+}
+
+# Variables for GetTopSellingProducts
+{
+  "limit": 5
+}
+
+#3. Query: Get Sales Analytics
+query GetSalesAnalytics($startDate: String!, $endDate: String!) {
+  getSalesAnalytics(startDate: $startDate, endDate: $endDate) {
+    totalRevenue
+    completedOrders
+    categoryBreakdown {
+      category
+      revenue
+    }
+  }
+}
+
+
+
+
+
+# Extra Queries & Mutations
+
+# Variables for GetSalesAnalytics
+{
+  "startDate": "2024-01-01",
+  "endDate": "2025-01-01"
+}
+
+
+# Query: Get All Customers
+query GetAllCustomers {
+  getAllCustomers {
+    _id
+    name
+    email
+    age
+    location
+  }
+}
+
+# Query: Get Customer by ID
+query GetCustomer($id: ID!) {
+  getCustomer(id: $id) {
+    _id
+    name
+    email
+    age
+    location
+    gender
+  }
+}
+
+# Variables for GetCustomer
+{
+  "id": "7895595e-7f25-47fe-a6f8-94b31bfab736"
+}
+
+# Query: Get All Products
+query GetAllProducts {
+  getAllProducts {
+    _id
+    name
+    category
+    price
+    stock
+  }
+}
+
+# Query: Get Product by ID
+query GetProduct($id: ID!) {
+  getProduct(id: $id) {
+    _id
+    name
+    category
+    price
+    stock
+  }
+}
+
+# Variables for GetProduct
+{
+  "id": "1e2c1b29-ec24-40dc-b2fc-1a3c17c3093c"
+}
+
+# Query: Get All Orders
+query GetAllOrders {
+  getAllOrders {
+    _id
+    customerId
+    totalAmount
+    orderDate
+    status
+  }
+}
+
+# Query: Get Order by ID
+query GetOrder($id: ID!) {
+  getOrder(id: $id) {
+    _id
+    customerId
+    products {
+      productId
+      quantity
+      priceAtPurchase
+    }
+    totalAmount
+    orderDate
+    status
+  }
+}
+
+# Variables for GetOrder
+{
+  "id": "06a714db-57ec-4af4-bd23-6e01ae764f14"
+}
+
+# Query: Get Customer Orders
+query GetCustomerOrders($customerId: ID!) {
+  getCustomerOrders(customerId: $customerId) {
+    _id
+    totalAmount
+    orderDate
+    status
+  }
+}
+
+# Variables for GetCustomerOrders
+{
+  "customerId": "7895595e-7f25-47fe-a6f8-94b31bfab736"
+}
+
+# Mutation: Place Order
+mutation PlaceOrder($customerId: ID!, $products: [OrderProductInput!]!) {
+  placeOrder(customerId: $customerId, products: $products) {
+    _id
+    customerId
+    products {
+      productId
+      quantity
+      priceAtPurchase
+    }
+    totalAmount
+    orderDate
+    status
+  }
+}
+
+# Variables for PlaceOrder
+{
+  "customerId": "7895595e-7f25-47fe-a6f8-94b31bfab736",
+  "products": [
+    {
+      "productId": "1e2c1b29-ec24-40dc-b2fc-1a3c17c3093c",
+      "quantity": 2
+    },
+    {
+      "productId": "5af13f8d-d1cc-4d7a-bc64-89cf3154077d",
+      "quantity": 1
+    }
+  ]
+}
+
+# Mutation: Update Order Status
+mutation UpdateOrderStatus($orderId: ID!, $status: String!) {
+  updateOrderStatus(orderId: $orderId, status: $status) {
+    _id
+    status
+    orderDate
+  }
+}
+
+# Variables for UpdateOrderStatus
+{
+  "orderId": "06a714db-57ec-4af4-bd23-6e01ae764f14",
+  "status": "completed"
+} 
